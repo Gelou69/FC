@@ -6,11 +6,9 @@
 
   <title>FinancialCorp</title>
 
-  <!-- SEO -->
   <meta name="description" content="Everything our referral partners need to get started, learn, and grow. Streamlined onboarding, education, and sales resources — all in one place."/>
   <meta name="author" content="FinancialCorp"/>
 
-  <!-- Open Graph (Facebook, LinkedIn, etc.) -->
   <meta property="og:type" content="website"/>
   <meta property="og:url" content="https://financialcorp.netlify.app/"/>
   <meta property="og:title" content="FinancialCorp Partner Portal"/>
@@ -20,18 +18,15 @@
   <meta property="og:image:height" content="630"/>
   <meta property="og:site_name" content="FinancialCorp"/>
 
-  <!-- Twitter -->
   <meta name="twitter:card" content="summary_large_image"/>
   <meta name="twitter:url" content="https://financialcorp.netlify.app/"/>
   <meta name="twitter:title" content="FinancialCorp Partner Portal"/>
   <meta name="twitter:description" content="Everything our referral partners need to get started, learn, and grow."/>
   <meta name="twitter:image" content="https://financialcorp.netlify.app/og-image.png"/>
 
-  <!-- Icons -->
   <link rel="icon" type="image/png" href="logo.png"/>
   <link rel="apple-touch-icon" href="logo.png"/>
 
-  <!-- Fonts -->
   <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700;800;900&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet"/>
 </head>
   <style>
@@ -49,6 +44,7 @@
       --muted:   #8a94aa;
       --border:  rgba(201,150,42,0.18);
       --radius:  16px;
+      --nav-height: 70px;
     }
 
     html { scroll-behavior: smooth; }
@@ -70,7 +66,7 @@
       align-items: center;
       justify-content: space-between;
       padding: 0 52px;
-      height: 70px;
+      height: var(--nav-height);
       background: var(--navy);
       border-bottom: 1px solid rgba(201,150,42,0.15);
       animation: slideDown .5s ease both;
@@ -86,15 +82,14 @@
       align-items: center;
       gap: 12px;
       text-decoration: none;
+      flex-shrink: 0;
     }
 
-
-  
-
     img.logo-image {
-    width: 79px;
-    height: 50px;
-} 
+      width: 79px;
+      height: 50px;
+    }
+
     .logo-text {
       font-family: 'Sora', sans-serif;
       font-size: 26px;
@@ -105,6 +100,7 @@
 
     .logo-text span { color: var(--gold); }
 
+    /* Desktop nav links */
     .nav-links {
       display: flex;
       align-items: center;
@@ -138,6 +134,13 @@
     .nav-links a:hover::after,
     .nav-links a.active::after { width: 100%; }
 
+    /* Nav right group: login btn + hamburger */
+    .nav-right {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
     .btn-login {
       display: flex;
       align-items: center;
@@ -153,6 +156,7 @@
       text-decoration: none;
       transition: background .2s, color .2s, transform .2s;
       font-family: 'DM Sans', sans-serif;
+      white-space: nowrap;
     }
 
     .btn-login:hover {
@@ -161,39 +165,172 @@
       transform: translateY(-2px);
     }
 
+    /* ─── HAMBURGER BUTTON ─── */
+    .hamburger {
+      display: none;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      gap: 5px;
+      width: 40px;
+      height: 40px;
+      background: transparent;
+      border: 1.5px solid rgba(255,255,255,0.2);
+      border-radius: 8px;
+      cursor: pointer;
+      padding: 8px;
+      transition: border-color .2s, background .2s;
+    }
+
+    .hamburger:hover {
+      border-color: var(--gold);
+      background: rgba(246,148,30,0.08);
+    }
+
+    .hamburger .bar {
+      width: 20px;
+      height: 2px;
+      background: var(--white);
+      border-radius: 2px;
+      transition: transform .3s ease, opacity .3s ease, width .3s ease;
+      transform-origin: center;
+    }
+
+    /* Animated X state */
+    .hamburger.open .bar:nth-child(1) {
+      transform: translateY(7px) rotate(45deg);
+    }
+    .hamburger.open .bar:nth-child(2) {
+      opacity: 0;
+      width: 0;
+    }
+    .hamburger.open .bar:nth-child(3) {
+      transform: translateY(-7px) rotate(-45deg);
+    }
+
+    /* ─── MOBILE MENU DRAWER ─── */
+    .mobile-menu {
+      display: none;
+      position: fixed;
+      top: var(--nav-height);
+      left: 0;
+      right: 0;
+      z-index: 99;
+      background: var(--navy);
+      border-bottom: 2px solid rgba(246,148,30,0.3);
+      padding: 0;
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height .35s cubic-bezier(.22,.68,0,1), padding .35s ease;
+    }
+
+    .mobile-menu.open {
+      max-height: 400px;
+      padding: 16px 0 24px;
+    }
+
+    .mobile-menu ul {
+      list-style: none;
+      padding: 0 24px;
+      margin-bottom: 20px;
+    }
+
+    .mobile-menu ul li {
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+    }
+
+    .mobile-menu ul li:last-child {
+      border-bottom: none;
+    }
+
+    .mobile-menu ul a {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 14px 4px;
+      text-decoration: none;
+      color: rgba(255,255,255,0.7);
+      font-size: 16px;
+      font-weight: 500;
+      transition: color .2s, padding-left .2s;
+    }
+
+    .mobile-menu ul a::before {
+      content: '';
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--gold);
+      flex-shrink: 0;
+      opacity: 0.5;
+      transition: opacity .2s;
+    }
+
+    .mobile-menu ul a:hover,
+    .mobile-menu ul a.active {
+      color: var(--white);
+      padding-left: 6px;
+    }
+
+    .mobile-menu ul a:hover::before,
+    .mobile-menu ul a.active::before {
+      opacity: 1;
+    }
+
+    .mobile-menu-footer {
+      padding: 0 24px;
+    }
+
+    .btn-login-mobile {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      width: 100%;
+      padding: 13px 22px;
+      border: 1.5px solid var(--gold);
+      border-radius: 8px;
+      color: var(--gold);
+      font-size: 15px;
+      font-weight: 600;
+      cursor: pointer;
+      background: transparent;
+      font-family: 'DM Sans', sans-serif;
+      transition: background .2s, color .2s;
+    }
+
+    .btn-login-mobile:hover {
+      background: var(--gold);
+      color: var(--navy);
+    }
+
     /* ─── HERO ─── */
-   .hero {
-  position: relative;
-  overflow: hidden;
-  padding: 80px 52px 90px;
+    .hero {
+      position: relative;
+      overflow: hidden;
+      padding: 80px 52px 90px;
+      background-image: url('background.jpg');
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+    }
 
-  background-image: url('background.jpg');
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
-}
+    .hero::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      z-index: 0;
+    }
 
-.hero::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  z-index: 0;
-}
-
-.hero * {
-  position: relative;
-  z-index: 1;
-}
-
-    @keyframes float3d {
-      0%, 100% { transform: translateY(-50%) rotate3d(1,1,0,0deg); }
-      50%       { transform: translateY(calc(-50% - 14px)) rotate3d(1,1,0,6deg); }
+    .hero * {
+      position: relative;
+      z-index: 1;
     }
 
     .hero-content {
       position: relative;
       z-index: 2;
-   max-width: 1500px;
+      max-width: 1500px;
       margin: 0 auto;
     }
 
@@ -228,7 +365,7 @@
 
     .hero h1 {
       font-family: 'Sora', sans-serif;
-      font-size: clamp(44px, 6vw, 76px);
+      font-size: clamp(36px, 6vw, 76px);
       font-weight: 900;
       line-height: 1.05;
       color: #0c1a2d;
@@ -248,7 +385,7 @@
     }
 
     .hero-sub {
-      font-size: 18px;
+      font-size: clamp(17px, 2.5vw, 22px);
       font-weight: 600;
       color: #0c1a2d;
       margin-bottom: 10px;
@@ -256,7 +393,7 @@
     }
 
     .hero-desc {
-      font-size: 17px;
+      font-size: clamp(16px, 2vw, 20px);
       color: #0c1a2dab;
       max-width: 460px;
       line-height: 1.75;
@@ -267,15 +404,17 @@
       from { opacity: 0; transform: translateY(20px); }
       to   { opacity: 1; transform: translateY(0); }
     }
-.cards-section {
-    max-width: 1586px;
-    margin: 0 auto;
-    padding: 60px 52px;
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 24px;
-    margin-top: -78px;
-}
+
+    /* ─── CARDS ─── */
+    .cards-section {
+      max-width: 1586px;
+      margin: 0 auto;
+      padding: 60px 52px;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+      margin-top: -78px;
+    }
 
     .card {
       background: var(--white);
@@ -360,7 +499,7 @@
 
     .card h2 {
       font-family: 'Sora', sans-serif;
-      font-size: 20px;
+      font-size: 25px;
       font-weight: 700;
       color: var(--navy);
     }
@@ -380,9 +519,9 @@
     .card ul li {
       display: flex;
       align-items: center;
-      gap: 12px;
+      gap: 26px;
       padding: 9px 0;
-      font-size: 17px;
+      font-size: 18px;
       color: #444;
       border-bottom: 1px solid rgba(0,0,0,0.06);
       transition: color .2s, padding-left .2s;
@@ -411,7 +550,7 @@
       background: var(--navy);
       color: var(--gold);
       font-family: 'Sora', sans-serif;
-      font-size: 14px;
+      font-size: 15px;
       font-weight: 700;
       border: none;
       border-radius: 10px;
@@ -432,29 +571,28 @@
     .btn-card:hover .arrow { transform: translateX(5px); }
 
     /* ─── SUPPORT BANNER ─── */
-   .support-banner {
-    max-width: 1579px;
-    margin: 0 auto 80px;
-    padding: 0 52px;
-    animation: fadeUp .6s ease 1.1s both;
-}
+    .support-banner {
+      max-width: 1579px;
+      margin: 0 auto 80px;
+      padding: 0 52px;
+      animation: fadeUp .6s ease 1.1s both;
+    }
 
-  .support-inner {
-  background: var(--white);
-  border: 1px solid rgba(11, 17, 32, 0.1);
-  border-radius: var(--radius);
-  padding: 22px 24px;
-  display: flex;
-  align-items: center;
-  gap: 20px;
-  position: relative;
-  overflow: hidden;
-  transition: border-color .3s, box-shadow .3s;
-
-  width: 100%;          /* FULL responsive */
-  max-width: 1500px;   /* limit on large screens */
-  margin: 0 auto;      /* center horizontally */
-}
+    .support-inner {
+      background: var(--white);
+      border: 1px solid rgba(11,17,32,0.1);
+      border-radius: var(--radius);
+      padding: 22px 24px;
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      position: relative;
+      overflow: hidden;
+      transition: border-color .3s, box-shadow .3s;
+      width: 100%;
+      max-width: 1500px;
+      margin: 0 auto;
+    }
 
     .support-inner:hover {
       border-color: rgba(201,150,42,0.3);
@@ -465,14 +603,13 @@
       position: absolute;
       right: 0; top: 0; bottom: 0;
       width: 200px;
-      background-image:
-        repeating-linear-gradient(
-          -45deg,
-          rgba(201,150,42,0.04) 0px,
-          rgba(201,150,42,0.04) 1px,
-          transparent 1px,
-          transparent 12px
-        );
+      background-image: repeating-linear-gradient(
+        -45deg,
+        rgba(201,150,42,0.04) 0px,
+        rgba(201,150,42,0.04) 1px,
+        transparent 1px,
+        transparent 12px
+      );
       pointer-events: none;
     }
 
@@ -521,7 +658,7 @@
     }
 
     .support-text p {
-      font-size: 17px;
+      font-size: 18px;
       color: var(--muted);
       line-height: 1.6;
     }
@@ -688,15 +825,108 @@
     .toast.show { transform: translateY(0); opacity: 1; }
 
     /* ─── RESPONSIVE ─── */
+
+    /* Tablet: hide desktop nav, show hamburger */
     @media (max-width: 900px) {
-      nav { padding: 0 24px; }
-      .nav-links { display: none; }
-      .hero { padding: 60px 24px 70px; }
-      .hero-3d { display: none; }
-      .cards-section { grid-template-columns: 1fr; padding: 40px 24px; }
-      .support-banner { padding: 0 24px; }
-      .support-inner { flex-wrap: wrap; padding: 28px 24px; }
-      .btn-support { width: 100%; justify-content: center; }
+      nav {
+        padding: 0 24px;
+      }
+
+      .nav-links {
+        display: none;
+      }
+
+      .btn-login {
+        display: none; /* hidden on mobile — shown inside drawer instead */
+      }
+
+      .hamburger {
+        display: flex;
+      }
+
+      .mobile-menu {
+        display: block;
+      }
+
+      .hero {
+        padding: 52px 24px 64px;
+      }
+
+      .cards-section {
+        grid-template-columns: 1fr;
+        padding: 40px 24px;
+        margin-top: -40px;
+      }
+
+      .support-banner {
+        padding: 0 24px;
+        margin-bottom: 60px;
+      }
+
+      .support-inner {
+        flex-wrap: wrap;
+        padding: 28px 24px;
+      }
+
+      .btn-support {
+        width: 100%;
+        justify-content: center;
+      }
+
+      .support-text p {
+        font-size: 16px;
+      }
+    }
+
+    /* Small phones: two-column cards grid */
+    @media (min-width: 540px) and (max-width: 900px) {
+      .cards-section {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    /* Very small screens */
+    @media (max-width: 380px) {
+      .logo-text {
+        font-size: 20px;
+      }
+
+      img.logo-image {
+        width: 56px;
+        height: 36px;
+      }
+
+      .hero {
+        padding: 40px 16px 52px;
+      }
+
+      .cards-section {
+        padding: 32px 16px;
+      }
+
+      .support-banner {
+        padding: 0 16px;
+      }
+
+      .toast {
+        left: 16px;
+        right: 16px;
+        bottom: 20px;
+      }
+    }
+
+    /* Overlay for when mobile menu is open */
+    .menu-backdrop {
+      display: none;
+      position: fixed;
+      inset: 0;
+      top: var(--nav-height);
+      z-index: 98;
+      background: rgba(0,0,0,0.4);
+    }
+
+    .menu-backdrop.visible {
+      display: block;
     }
   </style>
 <body>
@@ -705,30 +935,60 @@
   <nav>
     <a class="logo" href="#">
       <div class="logo-badge">
-        <img class="logo-image" src="logo.png" alt="">
+        <img class="logo-image" src="logo.png" alt="FinancialCorp Logo">
       </div>
       <div class="logo-text">FINANCIAL<span>CORP</span></div>
     </a>
+
+    <!-- Desktop nav links -->
     <ul class="nav-links">
       <li><a href="#" class="active">Home</a></li>
       <li><a href="#education">Education</a></li>
       <li><a href="#sales">Sales Materials</a></li>
       <li><a href="#support">Support</a></li>
     </ul>
-    <button class="btn-login" onclick="openModal()">
-      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-        <circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/>
-      </svg>
-      Partner Login
-    </button>
+
+    <div class="nav-right">
+      <!-- Desktop login button -->
+      <button class="btn-login" onclick="openModal()">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/>
+        </svg>
+        Partner Login
+      </button>
+
+      <!-- Hamburger (mobile only) -->
+      <button class="hamburger" id="hamburger" onclick="toggleMenu()" aria-label="Toggle navigation menu" aria-expanded="false">
+        <span class="bar"></span>
+        <span class="bar"></span>
+        <span class="bar"></span>
+      </button>
+    </div>
   </nav>
+
+  <!-- Mobile menu drawer -->
+  <div class="mobile-menu" id="mobileMenu">
+    <ul>
+      <li><a href="#" class="active" onclick="closeMenu()">Home</a></li>
+      <li><a href="#education" onclick="closeMenu()">Education</a></li>
+      <li><a href="#sales" onclick="closeMenu()">Sales Materials</a></li>
+      <li><a href="#support" onclick="closeMenu()">Support</a></li>
+    </ul>
+    <div class="mobile-menu-footer">
+      <button class="btn-login-mobile" onclick="closeMenu(); openModal();">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/>
+        </svg>
+        Partner Login
+      </button>
+    </div>
+  </div>
+
+  <!-- Backdrop for mobile menu -->
+  <div class="menu-backdrop" id="menuBackdrop" onclick="closeMenu()"></div>
 
   <!-- HERO -->
   <section class="hero">
-
-    <!-- 3D Cube -->
-
-
     <div class="hero-content">
       <h1>FinancialCorp<br><span class="gold">Partner Portal</span></h1>
       <div class="hero-gold-rule"></div>
@@ -847,25 +1107,84 @@
   <div class="toast" id="toast"></div>
 
   <script>
-    function openModal() { document.getElementById('modalOverlay').classList.add('open'); document.body.style.overflow='hidden'; }
-    function closeModal() { document.getElementById('modalOverlay').classList.remove('open'); document.body.style.overflow=''; }
-    function handleOverlayClick(e) { if(e.target===document.getElementById('modalOverlay')) closeModal(); }
-    function handleLogin() { closeModal(); showToast('Welcome back! Logging you in…'); }
+    /* ─── Modal ─── */
+    function openModal() {
+      document.getElementById('modalOverlay').classList.add('open');
+      document.body.style.overflow = 'hidden';
+    }
+    function closeModal() {
+      document.getElementById('modalOverlay').classList.remove('open');
+      document.body.style.overflow = '';
+    }
+    function handleOverlayClick(e) {
+      if (e.target === document.getElementById('modalOverlay')) closeModal();
+    }
+    function handleLogin() {
+      closeModal();
+      showToast('Welcome back! Logging you in…');
+    }
+
+    /* ─── Mobile menu ─── */
+    let menuOpen = false;
+
+    function toggleMenu() {
+      menuOpen ? closeMenu() : openMenuFn();
+    }
+
+    function openMenuFn() {
+      menuOpen = true;
+      document.getElementById('hamburger').classList.add('open');
+      document.getElementById('hamburger').setAttribute('aria-expanded', 'true');
+      document.getElementById('mobileMenu').classList.add('open');
+      document.getElementById('menuBackdrop').classList.add('visible');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeMenu() {
+      menuOpen = false;
+      document.getElementById('hamburger').classList.remove('open');
+      document.getElementById('hamburger').setAttribute('aria-expanded', 'false');
+      document.getElementById('mobileMenu').classList.remove('open');
+      document.getElementById('menuBackdrop').classList.remove('visible');
+      document.body.style.overflow = '';
+    }
+
+    /* ─── Toast ─── */
     let toastTimer;
     function showToast(msg) {
-      const t=document.getElementById('toast');
-      clearTimeout(toastTimer); t.textContent=msg; t.classList.add('show');
-      toastTimer=setTimeout(()=>t.classList.remove('show'),3200);
+      const t = document.getElementById('toast');
+      clearTimeout(toastTimer);
+      t.textContent = msg;
+      t.classList.add('show');
+      toastTimer = setTimeout(() => t.classList.remove('show'), 3200);
     }
-    const sections=['education','sales','support'];
-    window.addEventListener('scroll',()=>{
-      const y=window.scrollY+120; let active=null;
-      sections.forEach(id=>{const el=document.getElementById(id);if(el&&el.offsetTop<=y)active=id;});
-      document.querySelectorAll('.nav-links a').forEach(a=>{
-        a.classList.toggle('active',a.getAttribute('href')===(active?'#'+active:'#'));
+
+    /* ─── Scroll spy ─── */
+    const sections = ['education', 'sales', 'support'];
+    window.addEventListener('scroll', () => {
+      const y = window.scrollY + 120;
+      let active = null;
+      sections.forEach(id => {
+        const el = document.getElementById(id);
+        if (el && el.offsetTop <= y) active = id;
+      });
+      document.querySelectorAll('.nav-links a, .mobile-menu ul a').forEach(a => {
+        a.classList.toggle('active', a.getAttribute('href') === (active ? '#' + active : '#'));
       });
     });
-    document.addEventListener('keydown',e=>{if(e.key==='Escape')closeModal();});
+
+    /* ─── Keyboard ─── */
+    document.addEventListener('keydown', e => {
+      if (e.key === 'Escape') {
+        closeModal();
+        closeMenu();
+      }
+    });
+
+    /* Close menu on resize back to desktop */
+    window.addEventListener('resize', () => {
+      if (window.innerWidth > 900) closeMenu();
+    });
   </script>
 </body>
 </html>
